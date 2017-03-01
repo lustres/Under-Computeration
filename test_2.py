@@ -4,6 +4,7 @@ def test_step_semantic():
     small_step_semantic.main()
     big_step_semantic.main()
 
+
 def test_DFA():
     import DFA
     rulebook = DFA.DFARuleBook([
@@ -15,6 +16,7 @@ def test_DFA():
     assert dfa_design.is_accepted('a') == False
     assert dfa_design.is_accepted('baa') == False
     assert dfa_design.is_accepted('baba') == True
+
 
 def test_NFA():
     import NFA

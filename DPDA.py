@@ -123,9 +123,9 @@ class DPDA(object):
         return self
 
 
-class DFDA_Design(object):
+class DFDADesign(object):
     def __init__(self, start_state, accept_states, rulebook, init_stack = ['$']):
-        super(DFDA_Design, self).__init__()
+        super(DFDADesign, self).__init__()
         self.start_state = start_state
         self.accept_states = accept_states
         self.rulebook = rulebook
@@ -146,7 +146,7 @@ def main():
         PDARule(2, ')', 2, 'b', []),
         PDARule(2, None, 1, '$', ['$'])
     ])
-    dpda_design = DFDA_Design(1, [1], rulebook)
+    dpda_design = DFDADesign(1, [1], rulebook)
     print(dpda_design.is_accepted('(((((((((())))))))))'))
     print(dpda_design.is_accepted('()(())((()))(()(())))'))
     print(dpda_design.is_accepted('(()(()(()()(()()))()'))
