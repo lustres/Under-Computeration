@@ -146,6 +146,7 @@ def main():
         PDARule(2, ')', 2, 'b', []),
         PDARule(2, None, 1, '$', ['$'])
     ])
+
     dpda_design = DPDADesign(1, [1], rulebook)
     print(dpda_design.is_accepted('(((((((((())))))))))'))
     print(dpda_design.is_accepted('()(())((()))(()(())))'))
