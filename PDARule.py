@@ -18,6 +18,12 @@ class Stack(object):
     def top(self):
         return self.contents[0]
 
+    def __eq__(self, other):
+        return self.__hash__() == other.__hash__()
+
+    def __hash__(self):
+        return hash(tuple(self.contents))
+
     def __repr__(self):
         return f'<Stack ({self.top()}){"".join(list(map(str, self.contents[1:])))}>'
 
@@ -33,6 +39,12 @@ class PDAConfig(object):
 
     def is_stuck(self):
         return self.state is None
+
+    def __eq__(self, other):
+        return self.__hash__() == other.__hash__()
+
+    def __hash__(self):
+        return hash((self.state, self.stack))
 
     def __repr__(self):
         return f'<config state:{self.state} stack: {self.stack}>'

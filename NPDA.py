@@ -17,7 +17,6 @@ class NPDARuleBook(object):
         return [i for i in self.rules if i.is_applied(config, char)]
 
     def follow_free_moves(self, configs):
-        print(configs)
         more_config = self.next_configs(configs, None)
         if more_config <= configs:
             return configs
