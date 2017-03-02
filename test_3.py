@@ -27,3 +27,7 @@ def test_DPDA_2():
     assert dpda_design.is_accepted('ababab') == True
     assert dpda_design.is_accepted('bbbaaaab') == True
     assert dpda_design.is_accepted('baa') == False
+
+
+def test_NPDA():
+    pass
