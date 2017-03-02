@@ -1,10 +1,12 @@
+from PDARule import *
+
 def test_DPDA():
     import DPDA
     rulebook = DPDA.DPDARuleBook([
-        DPDA.PDARule(1, '(', 2, '$', ['b', '$']),
-        DPDA.PDARule(2, '(', 2, 'b', ['b', 'b']),
-        DPDA.PDARule(2, ')', 2, 'b', []),
-        DPDA.PDARule(2, None, 1, '$', ['$'])
+        PDARule(1, '(', 2, '$', ['b', '$']),
+        PDARule(2, '(', 2, 'b', ['b', 'b']),
+        PDARule(2, ')', 2, 'b', []),
+        PDARule(2, None, 1, '$', ['$'])
     ])
     dpda_design = DPDA.DPDADesign(1, [1], rulebook)
     assert dpda_design.is_accepted('(((((((((())))))))))') == True
@@ -12,16 +14,17 @@ def test_DPDA():
     assert dpda_design.is_accepted('(()(()(()()(()()))()') == False
     assert dpda_design.is_accepted('())') == False
 
+
 def test_DPDA_2():
     import DPDA
     rulebook = DPDA.DPDARuleBook([
-        DPDA.PDARule(1, 'a', 2, '$', ['a', '$']),
-        DPDA.PDARule(1, 'b', 2, '$', ['b', '$']),
-        DPDA.PDARule(2, 'a', 2, 'a', ['a', 'a']),
-        DPDA.PDARule(2, 'b', 2, 'b', ['b', 'b']),
-        DPDA.PDARule(2, 'a', 2, 'b', []),
-        DPDA.PDARule(2, 'b', 2, 'a', []),
-        DPDA.PDARule(2, None, 1, '$', ['$'])
+        PDARule(1, 'a', 2, '$', ['a', '$']),
+        PDARule(1, 'b', 2, '$', ['b', '$']),
+        PDARule(2, 'a', 2, 'a', ['a', 'a']),
+        PDARule(2, 'b', 2, 'b', ['b', 'b']),
+        PDARule(2, 'a', 2, 'b', []),
+        PDARule(2, 'b', 2, 'a', []),
+        PDARule(2, None, 1, '$', ['$'])
     ])
     dpda_design = DPDA.DPDADesign(1, [1], rulebook)
     assert dpda_design.is_accepted('ababab') == True
