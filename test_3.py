@@ -54,7 +54,6 @@ def test_NPDA():
     assert len(npda.current_configs) == 3
     assert npda.read_string('abb').is_accepted() == False
     assert len(npda.current_configs) == 3
-    assert npda.__read_char('a').is_accepted() == True
 
 
 def test_NPDA_2():
