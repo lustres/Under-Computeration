@@ -44,7 +44,8 @@ class NPDA(object):
         self._current_configs = self.__config_with_free_move(value)
 
     def is_accepted(self):
-        return len(self.current_configs & self.accept_states) != 0
+        return len({config.state for config in self.current_configs} & self.accept_states) != 0
+
 
     def __read_char(self, char):
         self.current_configs = self.rulebook.next_configs(self.current_configs, char)
