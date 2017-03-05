@@ -70,3 +70,32 @@ def test_TM_4():
     dtm.run()
     assert dtm.is_stuck() == False
     assert dtm.is_accepted() == True
+
+
+def test_TM_5():
+    rulebook = DTMRuleBook([
+        TMRule(1, 'a', 2, 'a', Direction.right),
+        TMRule(1, 'b', 3, 'b', Direction.right),
+        TMRule(1, 'c', 4, 'c', Direction.right),
+
+        TMRule(2, 'a', 2, 'a', Direction.right),
+        TMRule(2, 'b', 2, 'b', Direction.right),
+        TMRule(2, 'c', 2, 'c', Direction.right),
+        TMRule(2, '_', 5, 'a', Direction.right),
+
+        TMRule(3, 'a', 3, 'a', Direction.right),
+        TMRule(3, 'b', 3, 'b', Direction.right),
+        TMRule(3, 'c', 3, 'c', Direction.right),
+        TMRule(3, '_', 5, 'b', Direction.right),
+
+        TMRule(4, 'a', 4, 'a', Direction.right),
+        TMRule(4, 'b', 4, 'b', Direction.right),
+        TMRule(4, 'c', 4, 'c', Direction.right),
+        TMRule(4, '_', 5, 'c', Direction.right),
+    ])
+    tape = Tape([], 'b', ['c', 'a', 'b', 'a', 'c', 'c', 'a'])
+    dtm = DTM(TMConfig(1, tape), [5], rulebook)
+    assert repr(dtm.current_config.tape) == '<tape (b)cabacca>'
+    dtm.run()
+    assert dtm.is_accepted() == True
+    assert repr(dtm.current_config.tape) == '<tape bcabaccab(_)>'
