@@ -10,7 +10,7 @@ def test_TM_1():
 
 
 def test_TM_2():
-    tape = Tape(['1', '0', '1'], '1', [])
+    tape = Tape.make('1011')
     rulebook = DTMRuleBook([
         TMRule(1, '0', 2, '1', Direction.right),
         TMRule(1, '1', 1, '0', Direction.left),
@@ -36,7 +36,7 @@ def test_TM_3():
         TMRule(2, '1', 2, '1', Direction.right),
         TMRule(2, '_', 3, '_', Direction.left)
     ])
-    tape = Tape(['1', '2', '1'], '1', [])
+    tape = Tape.make('1211', 3)
     dtm = DTM(TMConfig(1, tape), [3], rulebook)
     dtm.run()
     assert dtm.is_stuck() == True
@@ -65,7 +65,7 @@ def test_TM_4():
 
         TMRule(5, '_', 1, '_', Direction.right),
     ])
-    tape = Tape([], 'a', ['a', 'a', 'b', 'b', 'b', 'c', 'c', 'c'])
+    tape = Tape.make('aaabbbccc')
     dtm = DTM(TMConfig(1, tape), [6], rulebook)
     dtm.run()
     assert dtm.is_stuck() == False
@@ -93,9 +93,10 @@ def test_TM_5():
         TMRule(4, 'c', 4, 'c', Direction.right),
         TMRule(4, '_', 5, 'c', Direction.right),
     ])
-    tape = Tape([], 'b', ['c', 'a', 'b', 'a', 'c', 'c', 'a'])
+    tape = Tape.make('bcabacca')
+    assert repr(tape) == '(b)cabacca'
     dtm = DTM(TMConfig(1, tape), [5], rulebook)
-    assert repr(dtm.current_config.tape) == '<tape (b)cabacca>'
+    assert repr(dtm.current_config.tape) == '(b)cabacca'
     dtm.run()
     assert dtm.is_accepted() == True
-    assert repr(dtm.current_config.tape) == '<tape bcabaccab(_)>'
+    assert repr(dtm.current_config.tape) == 'bcabaccab(_)'

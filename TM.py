@@ -10,7 +10,7 @@ class Tape(object):
         self.blank = blank
 
     def __repr__(self):
-        return f'<tape {"".join(list(map(str, self.left)))}({self.middle}){"".join(list(map(str, self.right)))}>'
+        return f'{"".join(list(map(str, self.left)))}({self.middle}){"".join(list(map(str, self.right)))}'
 
     def write(self, char):
         return Tape(self.left, char, self.right, self.blank)
@@ -31,6 +31,11 @@ class Tape(object):
         else:
             return Tape(self.left + [self.middle], self.blank, self.right[1:], self.blank)
 
+    @staticmethod
+    def make(string, index=0, blank='_'):
+        t = list(string)
+        return Tape(t[0:index], t[index], t[index + 1:], blank)
+
 
 class TMConfig(object):
     def __init__(self, state, tape):
@@ -39,7 +44,7 @@ class TMConfig(object):
         self.tape = tape
 
     def __repr__(self):
-        return f'<config state:{self.state} stack: {self.tape}>'
+        return f'<config state:{self.state} tape: {self.tape}>'
 
 
 class Direction(Enum):
