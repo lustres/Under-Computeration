@@ -51,7 +51,7 @@ def test_NPDA():
         PDARule(2, None, 3, '$', ['$']),
     ])
     config = PDAConfig(1, Stack(['$']))
-    npda = NPDA.NPDA({config}, {3}, rulebook)
+    npda = PDA({config}, {3}, rulebook)
     assert npda.is_accepted() == True
     assert len(npda.current_configs) == 3
     assert npda.read_string('abb').is_accepted() == False

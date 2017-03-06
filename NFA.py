@@ -22,7 +22,7 @@ class NFA(object):
     def __read_char(self, char):
         if 'not_accepted' in self.current_state:
             return self
-        s = self.rulebook.next_configs(self.current_state, char)
+        s = self.rulebook.next_config(self.current_state, char)
         self.current_state = s if s != set() else {'not_accepted'}
         return self
 
