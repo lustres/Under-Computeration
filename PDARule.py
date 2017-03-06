@@ -1,4 +1,5 @@
 from functools import reduce
+from base import Rule
 
 
 class Stack(object):
@@ -50,12 +51,9 @@ class PDAConfig(object):
         return f'<config state:{self.state} stack: {self.stack}>'
 
 
-class PDARule(object):
+class PDARule(Rule):
     def __init__(self, state, char, next_state, pop_char, push_chars):
-        super(PDARule, self).__init__()
-        self.state = state
-        self.char = char
-        self.next_state = next_state
+        super(PDARule, self).__init__(state, char, next_state)
         self.pop_char = pop_char
         self.push_chars = push_chars
 
@@ -65,11 +63,8 @@ class PDARule(object):
     def is_applied(self, config, char):
         return self.state == config.state and self.pop_char == config.stack.top() and self.char == char
 
-    def follow(self, config):
-        if not config.is_stuck():
-            return PDAConfig(self.next_state, self.next_stack(config))
-        else:
-            return config.stuck()
+    def next_config(self, next_state, config):
+        return PDAConfig(next_state, self.next_stack(config))
 
     def next_stack(self, config):
         popped_stack = config.stack.pop()
