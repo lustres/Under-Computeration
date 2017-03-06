@@ -6,23 +6,22 @@ class NFARuleBook(object):
         super(NFARuleBook, self).__init__()
         self.rules = rules
 
-    def next_states(self, states, char):
-        '''return set() when matched rule not found'''
-        return {i for state in states
+    def next_configs(self, configs, char):
+        return {i for state in configs
                 for i in self.follow_rules_for(state, char)}
 
-    def follow_rules_for(self, state, char):
-        return [rule.follow() for rule in self.rules_for(state, char)]
+    def follow_rules_for(self, config, char):
+        return [rule.follow(config) for rule in self.rules_for(config, char)]
 
-    def follow_free_moves(self, states):
-        more_states = self.next_states(states, None)
-        if more_states <= states:
-            return states
+    def follow_free_moves(self, configs):
+        more_configs = self.next_configs(configs, None)
+        if more_configs <= configs:
+            return configs
         else:
-            return self.follow_free_moves(more_states | states)
+            return self.follow_free_moves(more_configs | configs)
 
-    def rules_for(self, state, char):
-        return [i for i in self.rules if i.is_applied(state, char)]
+    def rules_for(self, configs, char):
+        return [i for i in self.rules if i.is_applied(configs, char)]
 
     def __repr__(self):
         return self.rules.__repr__()
@@ -52,7 +51,7 @@ class NFA(object):
     def __read_char(self, char):
         if 'not_accepted' in self.current_state:
             return self
-        s = self.rulebook.next_states(self.current_state, char)
+        s = self.rulebook.next_configs(self.current_state, char)
         self.current_state = s if s != set() else {'not_accepted'}
         return self
 

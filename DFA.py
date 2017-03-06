@@ -6,38 +6,35 @@ class DFARuleBook(object):
         super(DFARuleBook, self).__init__()
         self.rules = rules
 
-    def next_state(self, state, char):
-        '''raise exception when matched rule not found'''
-        rule = self.rule_for(state, char)
-        if rule:
-            return rule.follow()
+    def next_config(self, config, char):
+        rule = self.rule_for(config, char)
+        if rule is not None:
+            return rule.follow(config)
         else:
-            return None
+            return config.stuck()
 
-    def rule_for(self, state, char):
-        # 从 self.rules 中找到接受当前输入的规则
-        # 然后选取里面第一个规则
-        return next((i for i in self.rules if i.is_applied(state, char)), None)
+    def rule_for(self, config, char):
+        return next((i for i in self.rules if i.is_applied(config, char)), None)
 
     def __repr__(self):
         return self.rules.__repr__()
 
 
 class DFA(object):
-    def __init__(self, current_state, accept_states, rulebook):
+    def __init__(self, current_config, accept_states, rulebook):
         super(DFA, self).__init__()
-        self.current_state = current_state
+        self.current_config = current_config
         self.accept_states = accept_states
         self.rulebook = rulebook
 
     def is_accepted(self):
-        return self.current_state in self.accept_states
+        return self.current_config in self.accept_states
 
     def __read_char(self, char):
-        if 'not_accepted' == self.current_state:
+        if 'not_accepted' == self.current_config:
             return self
-        s = self.rulebook.next_state(self.current_state, char)
-        self.current_state = s if s is not None else 'not_accepted'
+        s = self.rulebook.next_config(self.current_config, char)
+        self.current_config = s if s is not None else 'not_accepted'
         return self
 
     def read_string(self, string):
@@ -46,7 +43,7 @@ class DFA(object):
         return self
 
     def __repr__(self):
-        return f'current state: {self.current_state}'
+        return f'current state: {self.current_config}'
 
 
 class DFADesign(object):
