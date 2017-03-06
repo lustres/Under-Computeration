@@ -1,32 +1,3 @@
-from FARule import *
-
-
-class NFARuleBook(object):
-    def __init__(self, rules):
-        super(NFARuleBook, self).__init__()
-        self.rules = rules
-
-    def next_configs(self, configs, char):
-        return {i for state in configs
-                for i in self.follow_rules_for(state, char)}
-
-    def follow_rules_for(self, config, char):
-        return [rule.follow(config) for rule in self.rules_for(config, char)]
-
-    def follow_free_moves(self, configs):
-        more_configs = self.next_configs(configs, None)
-        if more_configs <= configs:
-            return configs
-        else:
-            return self.follow_free_moves(more_configs | configs)
-
-    def rules_for(self, configs, char):
-        return [i for i in self.rules if i.is_applied(configs, char)]
-
-    def __repr__(self):
-        return self.rules.__repr__()
-
-
 class NFA(object):
     def __init__(self, _current_state, accept_states, rulebook):
         super(NFA, self).__init__()
@@ -76,20 +47,3 @@ class NFADesign(object):
 
     def is_accepted(self, string):
         return self.__to_nfa().read_string(string).is_accepted()
-
-
-def main():
-    rulebook = NFARuleBook([
-        FARule(1, None, 2), FARule(1, None, 4),
-        FARule(2, 'a', 3), FARule(3, 'a', 2),
-        FARule(4, 'a', 5), FARule(5, 'a', 6), FARule(6, 'a', 4)
-    ])
-    nfa_design = NFADesign(1, {2, 4}, rulebook)
-    print(nfa_design.is_accepted('aa'))
-    print(nfa_design.is_accepted('aaa'))
-    print(nfa_design.is_accepted('aaaaa'))
-    print(nfa_design.is_accepted('aaaaaa'))
-
-
-if __name__ == '__main__':
-    main()

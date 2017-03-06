@@ -1,4 +1,5 @@
 from PDARule import *
+from base import MultiRuleBook
 
 def test_DPDA():
     import DPDA
@@ -34,7 +35,7 @@ def test_DPDA_2():
 
 def test_NPDA():
     import NPDA
-    rulebook = NPDA.NPDARuleBook([
+    rulebook = MultiRuleBook([
         PDARule(1, 'a', 1, '$', ['a', '$']),
         PDARule(1, 'a', 1, 'a', ['a', 'a']),
         PDARule(1, 'a', 1, 'b', ['a', 'b']),
@@ -58,7 +59,7 @@ def test_NPDA():
 
 def test_NPDA_2():
     import NPDA
-    rulebook = NPDA.NPDARuleBook([
+    rulebook = MultiRuleBook([
         PDARule(1, 'a', 1, '$', ['a', '$']),
         PDARule(1, 'a', 1, 'a', ['a', 'a']),
         PDARule(1, 'a', 1, 'b', ['a', 'b']),

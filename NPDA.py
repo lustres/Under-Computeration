@@ -1,29 +1,6 @@
 from PDARule import *
 
 
-class NPDARuleBook(object):
-    def __init__(self, rules):
-        super(NPDARuleBook, self).__init__()
-        self.rules = rules
-
-    def next_configs(self, configs, char):
-        return {i for config in configs
-                for i in self.follow_rules_for(config, char)}
-
-    def follow_rules_for(self, config, char):
-        return [rule.follow(config) for rule in self.rules_for(config, char)]
-
-    def rules_for(self, config, char):
-        return [i for i in self.rules if i.is_applied(config, char)]
-
-    def follow_free_moves(self, configs):
-        more_config = self.next_configs(configs, None)
-        if more_config <= configs:
-            return configs
-        else:
-            return self.follow_free_moves(more_config | configs)
-
-
 class NPDA(object):
     def __init__(self, _current_configs, accept_states, rulebook):
         super(NPDA, self).__init__()

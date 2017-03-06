@@ -1,3 +1,7 @@
+from FARule import *
+from base import MultiRuleBook
+
+
 def test_step_semantic():
     import small_step_semantic
     import big_step_semantic
@@ -20,10 +24,10 @@ def test_DFA():
 
 def test_NFA():
     import NFA
-    rulebook = NFA.NFARuleBook([
-        NFA.FARule(1, None, 2), NFA.FARule(1, None, 4),
-        NFA.FARule(2, 'a', 3), NFA.FARule(3, 'a', 2),
-        NFA.FARule(4, 'a', 5), NFA.FARule(5, 'a', 6), NFA.FARule(6, 'a', 4)
+    rulebook = MultiRuleBook([
+        FARule(1, None, 2), FARule(1, None, 4),
+        FARule(2, 'a', 3), FARule(3, 'a', 2),
+        FARule(4, 'a', 5), FARule(5, 'a', 6), FARule(6, 'a', 4)
     ])
     nfa_design = NFA.NFADesign(1, {2, 4}, rulebook)
     assert nfa_design.is_accepted('aa') == True
