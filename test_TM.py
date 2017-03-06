@@ -1,4 +1,5 @@
 from TM import *
+from base import RuleBook
 
 
 def test_TM_1():
@@ -11,7 +12,7 @@ def test_TM_1():
 
 def test_TM_2():
     tape = Tape.make('1011')
-    rulebook = DTMRuleBook([
+    rulebook = RuleBook([
         TMRule(1, '0', 2, '1', Direction.right),
         TMRule(1, '1', 1, '0', Direction.left),
         TMRule(1, '_', 2, '1', Direction.right),
@@ -28,7 +29,7 @@ def test_TM_2():
 
 
 def test_TM_3():
-    rulebook = DTMRuleBook([
+    rulebook = RuleBook([
         TMRule(1, '0', 2, '1', Direction.right),
         TMRule(1, '1', 1, '0', Direction.left),
         TMRule(1, '_', 2, '1', Direction.right),
@@ -42,7 +43,7 @@ def test_TM_3():
     assert dtm.is_stuck() == True
 
 def test_TM_4():
-    rulebook = DTMRuleBook([
+    rulebook = RuleBook([
         TMRule(1, 'X', 1, 'X', Direction.right),
         TMRule(1, 'a', 2, 'X', Direction.right),
         TMRule(1, '_', 6, '_', Direction.left),
@@ -73,7 +74,7 @@ def test_TM_4():
 
 
 def test_TM_5():
-    rulebook = DTMRuleBook([
+    rulebook = RuleBook([
         TMRule(1, 'a', 2, 'a', Direction.right),
         TMRule(1, 'b', 3, 'b', Direction.right),
         TMRule(1, 'c', 4, 'c', Direction.right),

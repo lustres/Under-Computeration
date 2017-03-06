@@ -1,25 +1,3 @@
-from FARule import *
-
-
-class DFARuleBook(object):
-    def __init__(self, rules):
-        super(DFARuleBook, self).__init__()
-        self.rules = rules
-
-    def next_config(self, config, char):
-        rule = self.rule_for(config, char)
-        if rule is not None:
-            return rule.follow(config)
-        else:
-            return config.stuck()
-
-    def rule_for(self, config, char):
-        return next((i for i in self.rules if i.is_applied(config, char)), None)
-
-    def __repr__(self):
-        return self.rules.__repr__()
-
-
 class DFA(object):
     def __init__(self, current_config, accept_states, rulebook):
         super(DFA, self).__init__()
@@ -58,19 +36,3 @@ class DFADesign(object):
 
     def is_accepted(self, string):
         return self.__to_dfa().read_string(string).is_accepted()
-
-
-def main():
-    rulebook = DFARuleBook([
-        FARule(1, 'a', 2), FARule(1, 'b', 1),
-        FARule(2, 'a', 2), FARule(2, 'b', 3),
-        FARule(3, 'a', 3), FARule(3, 'b', 3)
-    ])
-    dfa_design = DFADesign(1, [3], rulebook)
-    print(dfa_design.is_accepted('a'))
-    print(dfa_design.is_accepted('baa'))
-    print(dfa_design.is_accepted('baba'))
-
-
-if __name__ == '__main__':
-    main()

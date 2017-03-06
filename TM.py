@@ -65,7 +65,7 @@ class TMRule(Rule):
         self.write_char = write_char
         self.direction = direction
 
-    def is_applied(self, config):
+    def is_applied(self, config, char = None):
         return self.state == config.state and self.char == config.tape.middle
 
     def __repr__(self):
@@ -84,20 +84,6 @@ class TMRule(Rule):
             raise TypeError()
 
 
-class DTMRuleBook(object):
-    def __init__(self, rules):
-        self.rules = rules
-
-    def next_config(self, config):
-        return self.rule_for(config).follow(config)
-
-    def rule_for(self, config):
-        return next((i for i in self.rules if i.is_applied(config)), None)
-
-    def is_applied(self, config):
-        return self.rule_for(config) is not None
-
-
 class DTM(object):
     def __init__(self, current_config, accept_states, rulebook):
         super(DTM, self).__init__()
@@ -109,11 +95,11 @@ class DTM(object):
         return self.current_config.state in self.accept_states
 
     def is_stuck(self):
-        return not self.is_accepted() and not self.rulebook.is_applied(self.current_config)
+        return not self.is_accepted() and not self.rulebook.is_applied(self.current_config, None)
 
     def step(self):
         print(self.current_config)
-        self.current_config = self.rulebook.next_config(self.current_config)
+        self.current_config = self.rulebook.next_config(self.current_config, None)
         return self
 
     def run(self):

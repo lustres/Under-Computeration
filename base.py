@@ -15,6 +15,33 @@ class Rule(object):
         raise NotImplementedError()
 
 
+class RuleBook(object):
+    def __init__(self, rules):
+        super(RuleBook, self).__init__()
+        self.rules = rules
+
+    def next_config(self, config, char):
+        rule = self.rule_for(config, char)
+        if rule is not None:
+            return rule.follow(config)
+        else:
+            return config.stuck()
+
+    def rule_for(self, config, char):
+        return next((i for i in self.rules if i.is_applied(config, char)), None)
+
+    def is_applied(self, config, char):
+        return self.rule_for(config, char) is not None
+
+    def follow_free_moves(self, config):
+        if self.is_applied(config, None):
+            return self.follow_free_moves(self.next_config(config, None))
+        else:
+            return config
+
+    def __repr__(self):
+        return self.rules.__repr__()
+
 class MultiRuleBook(object):
     def __init__(self, rules):
         super(MultiRuleBook, self).__init__()

@@ -1,9 +1,10 @@
 from PDARule import *
-from base import MultiRuleBook
+from base import RuleBook, MultiRuleBook
+
 
 def test_DPDA():
     import DPDA
-    rulebook = DPDA.DPDARuleBook([
+    rulebook = RuleBook([
         PDARule(1, '(', 2, '$', ['b', '$']),
         PDARule(2, '(', 2, 'b', ['b', 'b']),
         PDARule(2, ')', 2, 'b', []),
@@ -18,7 +19,7 @@ def test_DPDA():
 
 def test_DPDA_2():
     import DPDA
-    rulebook = DPDA.DPDARuleBook([
+    rulebook = RuleBook([
         PDARule(1, 'a', 2, '$', ['a', '$']),
         PDARule(1, 'b', 2, '$', ['b', '$']),
         PDARule(2, 'a', 2, 'a', ['a', 'a']),

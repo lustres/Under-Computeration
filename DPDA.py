@@ -1,34 +1,6 @@
 from PDARule import *
 
 
-class DPDARuleBook(object):
-    def __init__(self, rules):
-        super(DPDARuleBook, self).__init__()
-        self.rules = rules
-
-    def next_config(self, config, char):
-        rule = self.rule_for(config, char)
-        if rule is not None:
-            return rule.follow(config)
-        else:
-            return config.stuck()
-
-    def rule_for(self, config, char):
-        return next((i for i in self.rules if i.is_applied(config, char)), None)
-
-    def is_applied(self, config, char):
-        return self.rule_for(config, char) is not None
-
-    def follow_free_moves(self, config):
-        if self.is_applied(config, None):
-            return self.follow_free_moves(self.next_config(config, None))
-        else:
-            return config
-
-    def __repr__(self):
-        return self.rules.__repr__()
-
-
 class DPDA(object):
     def __init__(self, _current_config, accept_states, rulebook):
         super(DPDA, self).__init__()
@@ -74,22 +46,3 @@ class DPDADesign(object):
 
     def is_accepted(self, string):
         return self.__to_dpda().read_string(string).is_accepted()
-
-
-def main():
-    rulebook = DPDARuleBook([
-        PDARule(1, '(', 2, '$', ['b', '$']),
-        PDARule(2, '(', 2, 'b', ['b', 'b']),
-        PDARule(2, ')', 2, 'b', []),
-        PDARule(2, None, 1, '$', ['$'])
-    ])
-
-    dpda_design = DPDADesign(1, [1], rulebook)
-    print(dpda_design.is_accepted('(((((((((())))))))))'))
-    print(dpda_design.is_accepted('()(())((()))(()(())))'))
-    print(dpda_design.is_accepted('(()(()(()()(()()))()'))
-    print(dpda_design.is_accepted('())'))
-
-
-if __name__ == '__main__':
-    main()

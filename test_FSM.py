@@ -1,5 +1,5 @@
 from FARule import *
-from base import MultiRuleBook
+from base import RuleBook, MultiRuleBook
 
 
 def test_step_semantic():
@@ -11,10 +11,10 @@ def test_step_semantic():
 
 def test_DFA():
     import DFA
-    rulebook = DFA.DFARuleBook([
-        DFA.FARule(1, 'a', 2), DFA.FARule(1, 'b', 1),
-        DFA.FARule(2, 'a', 2), DFA.FARule(2, 'b', 3),
-        DFA.FARule(3, 'a', 3), DFA.FARule(3, 'b', 3)
+    rulebook = RuleBook([
+        FARule(1, 'a', 2), FARule(1, 'b', 1),
+        FARule(2, 'a', 2), FARule(2, 'b', 3),
+        FARule(3, 'a', 3), FARule(3, 'b', 3)
     ])
     dfa_design = DFA.DFADesign(1, [3], rulebook)
     assert dfa_design.is_accepted('a') == False
