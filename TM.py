@@ -1,4 +1,5 @@
 from enum import Enum
+from base import Rule
 
 
 class Tape(object):
@@ -46,17 +47,21 @@ class TMConfig(object):
     def __repr__(self):
         return f'<config state:{self.state} tape: {self.tape}>'
 
+    def is_stuck(self):
+        return self.state is None
+
+    def stuck(self):
+        return TMConfig(None, self.tape)
+
 
 class Direction(Enum):
     left = 'L'
     right = 'R'
 
-class TMRule(object):
+
+class TMRule(Rule):
     def __init__(self, state, char, next_state, write_char, direction):
-        super(TMRule, self).__init__()
-        self.state = state
-        self.char = char
-        self.next_state = next_state
+        super(TMRule, self).__init__(state, char, next_state)
         self.write_char = write_char
         self.direction = direction
 
@@ -66,8 +71,8 @@ class TMRule(object):
     def __repr__(self):
         return f'<rule {self.state}->{self.next_state} {self.char};{self.write_char}/{self.direction.value}>'
 
-    def follow(self, config):
-        return TMConfig(self.next_state, self.next_tape(config))
+    def next_config(self, next_state, config):
+        return TMConfig(next_state, self.next_tape(config))
 
     def next_tape(self, config):
         tape = config.tape.write(self.write_char)
