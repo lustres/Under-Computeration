@@ -1,4 +1,4 @@
-from PDARule import *
+from PDA import *
 from base import RuleBook, MultiRuleBook
 
 
