@@ -1,4 +1,4 @@
-from FARule import *
+from FA import *
 from base import RuleBook, MultiRuleBook
 
 
