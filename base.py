@@ -42,6 +42,7 @@ class RuleBook(object):
     def __repr__(self):
         return self.rules.__repr__()
 
+
 class MultiRuleBook(object):
     def __init__(self, rules):
         super(MultiRuleBook, self).__init__()
