@@ -105,3 +105,21 @@ class PDA(object):
         for c in string:
             self.__read_char(c)
         return self
+
+
+class PDADesign(object):
+    def __init__(self, start_state, accept_states, rulebook, init_stack = ['$']):
+        super(PDADesign, self).__init__()
+        self.start_state = start_state
+        self.accept_states = accept_states
+        self.rulebook = rulebook
+        self.stack = Stack(init_stack)
+
+    def __to_pda(self):
+        config = PDAConfig(self.start_state, self.stack)
+        if hasattr(self.rulebook, 'follow_rules_for'):
+            config = {config}
+        return  PDA(config, self.accept_states, self.rulebook)
+
+    def is_accepted(self, string):
+        return self.__to_pda().read_string(string).is_accepted()
