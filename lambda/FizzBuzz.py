@@ -37,3 +37,6 @@ IS_ZERO = lambda l: l(lambda n: FALSE)(TRUE)
 PAIR  = lambda x: lambda y: lambda f: f(x)(y)
 LEFT  = lambda f: f(lambda x: lambda y: x)
 RIGHT = lambda f: f(lambda x: lambda y: y)
+
+
+INCREMENT = lambda n: lambda p: lambda x: p(n(p)(x))

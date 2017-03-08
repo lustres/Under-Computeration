@@ -32,3 +32,9 @@ def test_pair_2():
     pair = PAIR(ZERO)(FIFTEEN)
     assert integer(LEFT(pair)) == 0
     assert integer(RIGHT(pair)) == 15
+
+
+def test_increment():
+    assert integer(INCREMENT(ZERO)) == 1
+    assert integer((INCREMENT(TWO))) == 3
+    assert integer(INCREMENT(FIFTEEN)) == 16
