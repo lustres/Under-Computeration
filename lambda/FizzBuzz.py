@@ -29,3 +29,6 @@ IF = lambda b: b
 
 def boolean(l):
     return IF(l)(True)(False)
+
+
+IS_ZERO = lambda l: l(lambda n: FALSE)(TRUE)

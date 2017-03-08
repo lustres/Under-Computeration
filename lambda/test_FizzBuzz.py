@@ -14,3 +14,9 @@ def test_number():
 def test_boolean():
     assert IF(TRUE)('happy')('sad') == 'happy'
     assert IF(FALSE)('happy')('sad') == 'sad'
+
+
+def test_predicate():
+    assert boolean(IS_ZERO(ZERO)) == True
+    assert boolean(IS_ZERO(THREE)) == False
+    assert boolean((IS_ZERO(FIFTEEN))) == False
