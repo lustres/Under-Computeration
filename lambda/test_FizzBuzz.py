@@ -61,3 +61,15 @@ def test_math():
     assert integer(SUB(FIVE)(THREE)) == 2
     assert integer(MULTI(THREE)(FIVE)) == 15
     assert integer(POWER(THREE)(FIVE)) == pow(3, 5)
+
+
+def test_less_or_equal():
+    assert boolean(LESS_OR_EQUAL(ONE)(TWO)) == True
+    assert boolean(LESS_OR_EQUAL(FIVE)(THREE)) == False
+    assert boolean(LESS_OR_EQUAL(FIFTEEN)(FIFTEEN)) == True
+
+
+def test_mod():
+    assert integer(MOD(FIFTEEN)(FIVE)) == 0
+    assert integer(MOD(FIFTEEN)(THREE)) == 0
+    assert integer(MOD(FIFTEEN)(TWO)) == 1
