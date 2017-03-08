@@ -40,3 +40,6 @@ RIGHT = lambda f: f(lambda x: lambda y: y)
 
 
 INCREMENT = lambda n: lambda p: lambda x: p(n(p)(x))
+
+
+SLIDE = lambda p: PAIR(RIGHT(p))(INCREMENT(RIGHT(p)))

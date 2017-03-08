@@ -38,3 +38,13 @@ def test_increment():
     assert integer(INCREMENT(ZERO)) == 1
     assert integer((INCREMENT(TWO))) == 3
     assert integer(INCREMENT(FIFTEEN)) == 16
+
+
+def test_slide():
+    NEXT_PAIR = SLIDE(PAIR(ZERO)(ZERO))
+    assert integer(LEFT(NEXT_PAIR)) == 0
+    assert integer(RIGHT(NEXT_PAIR)) == 1
+
+    NEXT_PAIR = SLIDE(NEXT_PAIR)
+    assert integer(LEFT(NEXT_PAIR)) == 1
+    assert integer((RIGHT(NEXT_PAIR))) == 2
