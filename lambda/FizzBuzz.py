@@ -18,3 +18,14 @@ FIFTEEN = lambda p: lambda x: p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(x)))))))))))))))
 
 def integer(l):
     return l(lambda n: n + 1)(0)
+
+
+TRUE  = lambda x: lambda y: x
+FALSE = lambda x: lambda y: y
+
+
+IF = lambda b: b
+
+
+def boolean(l):
+    return IF(l)(True)(False)

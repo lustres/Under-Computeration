@@ -9,3 +9,8 @@ def test_number():
     assert integer(FIVE) == 5
     assert integer(FIFTEEN) == 15
     # assert integer(HUNDRED) == 100
+
+
+def test_boolean():
+    assert IF(TRUE)('happy')('sad') == 'happy'
+    assert IF(FALSE)('happy')('sad') == 'sad'
