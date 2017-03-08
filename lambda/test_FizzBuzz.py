@@ -20,3 +20,15 @@ def test_predicate():
     assert boolean(IS_ZERO(ZERO)) == True
     assert boolean(IS_ZERO(THREE)) == False
     assert boolean((IS_ZERO(FIFTEEN))) == False
+
+
+def test_pair():
+    pair = PAIR(THREE)(FIVE)
+    assert integer(LEFT(pair)) == 3
+    assert integer(RIGHT(pair)) == 5
+
+
+def test_pair_2():
+    pair = PAIR(ZERO)(FIFTEEN)
+    assert integer(LEFT(pair)) == 0
+    assert integer(RIGHT(pair)) == 15
