@@ -48,3 +48,9 @@ def test_slide():
     NEXT_PAIR = SLIDE(NEXT_PAIR)
     assert integer(LEFT(NEXT_PAIR)) == 1
     assert integer((RIGHT(NEXT_PAIR))) == 2
+
+
+def test_decrement():
+    assert integer(DECREMENT(ONE)) == 0
+    assert integer(DECREMENT(TWO)) == 1
+    assert integer(DECREMENT(THREE)) == 2

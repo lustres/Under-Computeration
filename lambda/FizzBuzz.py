@@ -43,3 +43,6 @@ INCREMENT = lambda n: lambda p: lambda x: p(n(p)(x))
 
 
 SLIDE = lambda p: PAIR(RIGHT(p))(INCREMENT(RIGHT(p)))
+
+
+DECREMENT = lambda n: LEFT(n(SLIDE)(PAIR(ZERO)(ZERO)))
