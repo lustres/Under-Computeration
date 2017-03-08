@@ -54,3 +54,10 @@ def test_decrement():
     assert integer(DECREMENT(ONE)) == 0
     assert integer(DECREMENT(TWO)) == 1
     assert integer(DECREMENT(THREE)) == 2
+
+
+def test_math():
+    assert integer(ADD(TWO)(THREE)) == 5
+    assert integer(SUB(FIVE)(THREE)) == 2
+    assert integer(MULTI(THREE)(FIVE)) == 15
+    assert integer(POWER(THREE)(FIVE)) == pow(3, 5)

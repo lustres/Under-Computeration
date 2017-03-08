@@ -46,3 +46,9 @@ SLIDE = lambda p: PAIR(RIGHT(p))(INCREMENT(RIGHT(p)))
 
 
 DECREMENT = lambda n: LEFT(n(SLIDE)(PAIR(ZERO)(ZERO)))
+
+
+ADD = lambda m: lambda n: n(INCREMENT)(m)
+SUB = lambda m: lambda n: n(DECREMENT)(m)
+MULTI = lambda m: lambda n: n(ADD(m))(ZERO)
+POWER = lambda m: lambda n: n(MULTI(m))(ONE)
