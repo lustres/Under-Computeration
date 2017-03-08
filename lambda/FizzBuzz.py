@@ -1,3 +1,6 @@
+from terms import *
+
+
 ZERO    = lambda p: lambda x: x
 ONE     = lambda p: lambda x: p(x)
 TWO     = lambda p: lambda x: p(p(x))
@@ -57,4 +60,7 @@ POWER = lambda m: lambda n: n(MULTI(m))(ONE)
 LESS_OR_EQUAL = lambda m: lambda n: IS_ZERO(SUB(m)(n))
 
 
-MOD = lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(MOD(SUB(m)(n))(n))(m)
+# MOD = lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(MOD(SUB(m)(n))(n))(m)
+# MOD = lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: MOD(SUB(m)(n))(n)(x))(m)
+# MOD = Y(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: f(SUB(m)(n))(n)(x))(m))
+MOD = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: f(SUB(m)(n))(n)(x))(m))
