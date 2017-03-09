@@ -16,6 +16,25 @@ def test_boolean():
     assert IF(FALSE)('happy')('sad') == 'sad'
 
 
+def test_boolean_AND():
+    assert boolean(AND(TRUE)(TRUE)) == True
+    assert boolean(AND(TRUE)(FALSE)) == False
+    assert boolean(AND(FALSE)(TRUE)) == False
+    assert boolean(AND(FALSE)(FALSE)) == False
+
+
+def test_boolean_OR():
+    assert boolean(OR(TRUE)(TRUE)) == True
+    assert boolean(OR(TRUE)(FALSE)) == True
+    assert boolean(OR(FALSE)(TRUE)) == True
+    assert boolean(OR(FALSE)(FALSE)) == False
+
+
+def test_boolean_NOT():
+    assert boolean(NOT(TRUE)) == False
+    assert boolean(NOT(FALSE)) == True
+
+
 def test_predicate():
     assert boolean(IS_ZERO(ZERO)) == True
     assert boolean(IS_ZERO(THREE)) == False
