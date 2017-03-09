@@ -7,5 +7,7 @@ W = lambda x: lambda y: x(y)(y)
 U = lambda x: lambda y: y(x(x)(y))
 ω = lambda x: x(x)
 # Ω = ω(ω)
+# Y g = Y (Y g)
 Y = lambda g: (lambda x: g(x(x)))(lambda x: g(x(x)))
+# Z g v = Z (Z g) v
 Z = lambda g: (lambda x: g(lambda y: x(x)(y)))(lambda x: g(lambda y: x(x)(y)))

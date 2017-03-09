@@ -104,5 +104,13 @@ LESS_OR_EQUAL = lambda m: lambda n: IS_ZERO(SUB(m)(n))
 
 # MOD = lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(MOD(SUB(m)(n))(n))(m)
 # MOD = lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: MOD(SUB(m)(n))(n)(x))(m)
-# MOD = Y(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: f(SUB(m)(n))(n)(x))(m))
+# let G = lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: f(SUB(m)(n))(n)(x))(m)
+# => G f m n = f m n = MOD m n
+# => G f = f = MOD
+# => fix G = f = MOD
+# Y G = Y (Y G)
+# => Y G = fix G = f = MOD
+# => MOD = Y G
+# use lazy combinator Z to avoid strict evaluate
+# MOD = Z G
 MOD = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: f(SUB(m)(n))(n)(x))(m))
