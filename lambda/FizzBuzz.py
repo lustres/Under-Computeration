@@ -50,11 +50,43 @@ SLIDE = lambda p: PAIR(RIGHT(p))(INCREMENT(RIGHT(p)))
 
 DECREMENT = lambda n: LEFT(n(SLIDE)(PAIR(ZERO)(ZERO)))
 
+# A = λm.λn.m(...m(m(n))...)
+# B = λx.λy.x(...x(x(y))...)
+# ADD = λA.λB.λp.λq.p(...p(p(q))...)
+# so we should let:
+#     m = λp
+#     n = B λp λq
+# ADD = λA.λB.λp.λq.A p (B p q)
+ADD = lambda m: lambda n: lambda f: lambda x: m(f)(n(f)(x))
+# ADD = lambda m: lambda n: n(INCREMENT)(m)
 
-ADD = lambda m: lambda n: n(INCREMENT)(m)
 SUB = lambda m: lambda n: n(DECREMENT)(m)
-MULTI = lambda m: lambda n: n(ADD(m))(ZERO)
-POWER = lambda m: lambda n: n(MULTI(m))(ONE)
+
+# A = λm.λn.m(...m(m(n))...)
+# B = λx.λy.x(...x(x(y))...)
+# MULTI = λA.λB.λp.λq.p(...p(p(q))...)
+# so we should let:
+#     m = B λp
+#     n = λq
+# MULTI = λA.λB.λp.λq.A (B p) q
+# MULTI = λA.λB.λp.λq.A (B p) q
+# apply β-reduction (on q)
+# MULTI = λA.λB.λp.A (B p)
+MULTI = lambda m: lambda n: lambda f: m(n(f))
+# MULTI = lambda m: lambda n: n(ADD(m))(ZERO)
+
+# A = λm.λn.m(...m(m(n))...)
+# B = λx.λy.x(...x(x(y))...)
+# POWER = λA.λB.λp.λq.A(...A(p)...) q
+#     m = A
+#     n = p
+# POWER = λA.λB.λp.λq.B A p q
+# apply β-reduction (on q)
+# POWER = λA.λB.λp.B A p
+# apply β-reduction (on p)
+# POWER = λA.λB.B A
+POWER = lambda b: lambda e: e(b)
+# POWER = lambda m: lambda n: n(MULTI(m))(ONE)
 
 
 LESS_OR_EQUAL = lambda m: lambda n: IS_ZERO(SUB(m)(n))
