@@ -114,3 +114,20 @@ LESS_OR_EQUAL = lambda m: lambda n: IS_ZERO(SUB(m)(n))
 # use lazy combinator Z to avoid strict evaluate
 # MOD = Z G
 MOD = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: f(SUB(m)(n))(n)(x))(m))
+
+
+# ARRAY = (F, (1, (F, (2, (F, (3, (T, T)))))))
+EMPTY    = PAIR(TRUE)(TRUE)
+IS_EMPTY = LEFT
+UNSHIFT  = lambda l: lambda x: PAIR(FALSE)(PAIR(x)(l))
+
+FIRST = lambda l: LEFT(RIGHT(l))
+REST  = lambda l: RIGHT(RIGHT(l))
+
+
+def array(l):
+    a = []
+    while not boolean(IS_EMPTY(l)):
+        a.append(FIRST(l))
+        l = REST(l)
+    return a

@@ -92,3 +92,27 @@ def test_mod():
     assert integer(MOD(FIFTEEN)(FIVE)) == 0
     assert integer(MOD(FIFTEEN)(THREE)) == 0
     assert integer(MOD(FIFTEEN)(TWO)) == 1
+
+
+def test_array():
+    L = UNSHIFT(
+        UNSHIFT(
+            UNSHIFT(EMPTY)(THREE)
+        )(TWO)
+    )(ONE)
+
+    assert boolean(IS_EMPTY(L)) == False
+    assert integer(FIRST(L)) == 1
+    assert integer(FIRST(REST(L))) == 2
+    assert integer(FIRST(REST(REST(L)))) == 3
+    assert boolean(IS_EMPTY(FIRST(REST(REST(REST))))) == True
+
+def test_array_2():
+    L = UNSHIFT(
+        UNSHIFT(
+            UNSHIFT(EMPTY)(THREE)
+        )(TWO)
+    )(ONE)
+
+    assert array(EMPTY) == []
+    assert list(map(integer, array(L))) == [1,2,3]
