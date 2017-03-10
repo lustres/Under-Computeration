@@ -79,6 +79,7 @@ def test_math():
     assert integer(ADD(TWO)(THREE)) == 5
     assert integer(SUB(FIVE)(THREE)) == 2
     assert integer(MULTI(THREE)(FIVE)) == 15
+    assert integer(DIV(TEN)(THREE)) == 3
     assert integer(POWER(THREE)(FIVE)) == pow(3, 5)
 
 
