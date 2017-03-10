@@ -87,6 +87,15 @@ SUB = lambda m: lambda n: n(DECREMENT)(m)
 MULTI = lambda m: lambda n: lambda f: m(n(f))
 # MULTI = lambda m: lambda n: n(ADD(m))(ZERO)
 
+# def div(m, n):
+#     if n <= m:
+#         return div(m - n, n) + 1
+#     else:
+#         return 0
+# DIV = lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(INCREMENT(DIV(SUB(m)(n))(n)))(ZERO)
+# DIV = lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: INCREMENT(DIV(SUB(m)(n))(n))(x))(ZERO)
+DIV = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: INCREMENT(f(SUB(m)(n))(n))(x))(ZERO))
+
 # A = λm.λn.m(...m(m(n))...)
 # B = λx.λy.x(...x(x(y))...)
 # POWER = λA.λB.λp.λq.A(...A(p)...) q
@@ -122,6 +131,7 @@ MOD = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(n)(m))(lambda x: f(SUB(m)
 EMPTY    = PAIR(TRUE)(TRUE)
 IS_EMPTY = LEFT
 UNSHIFT  = lambda l: lambda x: PAIR(FALSE)(PAIR(x)(l))
+PUSH = lambda l: lambda x: FOLD(l)(UNSHIFT(EMPTY)(x))(UNSHIFT)
 
 FIRST = lambda l: LEFT(RIGHT(l))
 REST  = lambda l: RIGHT(RIGHT(l))
@@ -169,3 +179,17 @@ def character(c):
 
 def string(s):
     return "".join(map(character, array(s)))
+
+
+# def digits(n):
+#     def previous():
+#         if n <= 10-1:
+#             return []
+#         else:
+#             return digits(n // 10)
+#
+#     # return previous().append(n % 10) array.append does not return
+#     return previous() + [n % 10]
+# DIGITS = lambda n: PUSH(IF(LESS_OR_EQUAL(n)(SUB(TEN)(ONE)))(EMPTY)(DIGITS(DIV(n)(TEN))))(MOD(n)(TEN))
+# DIGITS = lambda n: PUSH(IF(LESS_OR_EQUAL(n)(SUB(TEN)(ONE)))(EMPTY)(lambda x: DIGITS(DIV(n)(TEN)))(x))(MOD(n)(TEN))
+DIGITS = Z(lambda f: lambda n: PUSH(IF(LESS_OR_EQUAL(n)(SUB(TEN)(ONE)))(EMPTY)(lambda x: DIGITS(DIV(n)(TEN))(x)))(MOD(n)(TEN)))

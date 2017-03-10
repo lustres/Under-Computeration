@@ -141,3 +141,8 @@ def test_str():
     assert string(FIZZ)     == "Fizz"
     assert string(BUZZ)     == "Buzz"
     assert string(FIZZBUZZ) == "FizzBuzz"
+
+
+def test_digits():
+    assert string(DIGITS(FIVE)) == "5"
+    assert string(DIGITS(POWER(FIVE)(THREE))) == "125"
