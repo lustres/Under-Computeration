@@ -147,3 +147,21 @@ def test_str():
 def test_digits():
     assert string(DIGITS(FIVE)) == "5"
     assert string(DIGITS(POWER(FIVE)(THREE))) == "125"
+
+
+def test_FizzBuzz():
+    solution = MAP(RANGE(ONE)(POWER(TEN)(TWO)))(lambda n: IF(IS_ZERO(MOD(n)(FIFTEEN)))(FIZZBUZZ)(IF(IS_ZERO(MOD(n)(THREE)))(FIZZ)(IF(IS_ZERO(MOD(n)(FIVE)))(BUZZ)(DIGITS(n)))))
+    def fizz_buzz():
+        def pre(n):
+            if n % 15 == 0:
+                return 'FizzBuzz'
+            elif n % 3 == 0:
+                return 'Fizz'
+            elif n % 5 == 0:
+                return 'Buzz'
+            else:
+                return str(n)
+
+        return list(map(pre, range(1, 100+1)))
+
+    assert list(map(string, array(solution))) == fizz_buzz()
