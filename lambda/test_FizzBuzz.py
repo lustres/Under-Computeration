@@ -123,3 +123,8 @@ def test_range():
     assert list(map(integer, array(RANGE(ONE)(ONE)))) == [1]
     assert list(map(integer, array(RANGE(ZERO)(FIFTEEN)))) == list(range(0, 15+1))
     assert list(map(integer, array(RANGE(ONE)(POWER(MULTI(TWO)(FIVE))(TWO))))) == list(range(1, (2 * 5) ** 2 + 1))
+
+
+def test_fold():
+    assert integer(FOLD(RANGE(ONE)(FIVE))(ZERO)(ADD)) == 15
+    assert integer(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)) == 120

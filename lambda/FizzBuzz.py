@@ -132,7 +132,21 @@ def array(l):
         l = REST(l)
     return a
 
-
+# def range(m, n):
+#     if m <= n:
+#         return [m] + range(m+1, n)
+#     else:
+#         return []
 # RANGE = lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(UNSHIFT(RANGE(INCREMENT(m))(n))(m))(EMPTY)
 # RANGE = lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(lambda x: UNSHIFT(RANGE(INCREMENT(m))(n))(m)(x))(EMPTY)
 RANGE = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(lambda x: UNSHIFT(f(INCREMENT(m))(n))(m)(x))(EMPTY))
+
+
+# def fold(l, acc, func):
+#     if l:
+#         return func(fold(l[1:], acc, func), l[0])
+#     else:
+#         return acc
+# FOLD = lambda l: lambda x: lambda g: IF(IS_EMPTY(l))(x)(g(FOLD(REST(l))(x)(g))(FIRST(l)))
+# FOLD = lambda l: lambda x: lambda g: IF(IS_EMPTY(l))(x)(lambda y: g(FOLD(REST(l))(x)(g))(FIRST(l))(y))
+FOLD = Z(lambda f: lambda l: lambda x: lambda g: IF(IS_EMPTY(l))(x)(lambda y: g(f(REST(l))(x)(g))(FIRST(l))(y)))
