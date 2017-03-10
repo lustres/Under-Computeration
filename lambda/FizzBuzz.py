@@ -131,3 +131,8 @@ def array(l):
         a.append(FIRST(l))
         l = REST(l)
     return a
+
+
+# RANGE = lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(UNSHIFT(RANGE(INCREMENT(m))(n))(m))(EMPTY)
+# RANGE = lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(lambda x: UNSHIFT(RANGE(INCREMENT(m))(n))(m)(x))(EMPTY)
+RANGE = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(lambda x: UNSHIFT(f(INCREMENT(m))(n))(m)(x))(EMPTY))

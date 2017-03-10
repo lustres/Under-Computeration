@@ -107,6 +107,7 @@ def test_array():
     assert integer(FIRST(REST(REST(L)))) == 3
     assert boolean(IS_EMPTY(FIRST(REST(REST(REST))))) == True
 
+
 def test_array_2():
     L = UNSHIFT(
         UNSHIFT(
@@ -116,3 +117,9 @@ def test_array_2():
 
     assert array(EMPTY) == []
     assert list(map(integer, array(L))) == [1,2,3]
+
+
+def test_range():
+    assert list(map(integer, array(RANGE(ONE)(ONE)))) == [1]
+    assert list(map(integer, array(RANGE(ZERO)(FIFTEEN)))) == list(range(0, 15+1))
+    assert list(map(integer, array(RANGE(ONE)(POWER(MULTI(TWO)(FIVE))(TWO))))) == list(range(1, (2 * 5) ** 2 + 1))
