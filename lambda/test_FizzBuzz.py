@@ -132,3 +132,12 @@ def test_fold():
 
 def test_map():
     assert list(map(integer, array(MAP(RANGE(ONE)(THREE))(INCREMENT)))) == [2, 3, 4]
+
+
+def test_str():
+    assert character(FOUR)  == "4"
+    assert character(TEN)   == "B"
+
+    assert string(FIZZ)     == "Fizz"
+    assert string(BUZZ)     == "Buzz"
+    assert string(FIZZBUZZ) == "FizzBuzz"

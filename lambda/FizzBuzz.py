@@ -5,7 +5,9 @@ ZERO    = lambda p: lambda x: x
 ONE     = lambda p: lambda x: p(x)
 TWO     = lambda p: lambda x: p(p(x))
 THREE   = lambda p: lambda x: p(p(p(x)))
+FOUR    = lambda p: lambda x: p(p(p(p(x))))
 FIVE    = lambda p: lambda x: p(p(p(p(p(x)))))
+TEN     = lambda p: lambda x: p(p(p(p(p(p(p(p(p(p(x))))))))))
 FIFTEEN = lambda p: lambda x: p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(x)))))))))))))))
 ## parser will stack overflow :(
 # HUNDRED = lambda p: lambda x: p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(p(
@@ -154,3 +156,16 @@ FOLD = Z(lambda f: lambda l: lambda x: lambda g: IF(IS_EMPTY(l))(x)(lambda y: g(
 # def map(l, func):
 #     return fold(l, [], lambda array: lambda x: array.unshift(func(x)))
 MAP = lambda k: lambda f: FOLD(k)(EMPTY)(lambda l: lambda x: UNSHIFT(l)(f(x)))
+
+
+FIZZ     = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ADD(TEN)(FOUR)))(ADD(TEN)(FOUR)))(ADD(TEN)(TWO)))(ADD(TEN)(ONE))
+BUZZ     = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ADD(TEN)(FOUR)))(ADD(TEN)(FOUR)))(ADD(TEN)(THREE)))(ADD(TEN)(ZERO))
+FIZZBUZZ = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(BUZZ)(ADD(TEN)(FOUR)))(ADD(TEN)(FOUR)))(ADD(TEN)(TWO)))(ADD(TEN)(ONE))
+
+
+def character(c):
+    return "0123456789BFiuz"[integer(c)]
+
+
+def string(s):
+    return "".join(map(character, array(s)))
