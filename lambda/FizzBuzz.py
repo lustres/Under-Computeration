@@ -150,3 +150,7 @@ RANGE = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(lambda x: UNSHIF
 # FOLD = lambda l: lambda x: lambda g: IF(IS_EMPTY(l))(x)(g(FOLD(REST(l))(x)(g))(FIRST(l)))
 # FOLD = lambda l: lambda x: lambda g: IF(IS_EMPTY(l))(x)(lambda y: g(FOLD(REST(l))(x)(g))(FIRST(l))(y))
 FOLD = Z(lambda f: lambda l: lambda x: lambda g: IF(IS_EMPTY(l))(x)(lambda y: g(f(REST(l))(x)(g))(FIRST(l))(y)))
+
+# def map(l, func):
+#     return fold(l, [], lambda array: lambda x: array.unshift(func(x)))
+MAP = lambda k: lambda f: FOLD(k)(EMPTY)(lambda l: lambda x: UNSHIFT(l)(f(x)))

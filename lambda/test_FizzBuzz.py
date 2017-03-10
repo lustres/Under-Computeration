@@ -128,3 +128,7 @@ def test_range():
 def test_fold():
     assert integer(FOLD(RANGE(ONE)(FIVE))(ZERO)(ADD)) == 15
     assert integer(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)) == 120
+
+
+def test_map():
+    assert list(map(integer, array(MAP(RANGE(ONE)(THREE))(INCREMENT)))) == [2, 3, 4]
