@@ -129,6 +129,10 @@ SLIDE = lambda p: PAIR(RIGHT(p))(INCREMENT(RIGHT(p)))
 RANGE = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(lambda x: UNSHIFT(f(INCREMENT(m))(n))(m)(x))(EMPTY))
 
 
+# INFINITY = UNSHIFT(INFINITY)(ZERO)
+INFINITY = Z(lambda f: UNSHIFT(f)(ZERO))
+
+
 # def fold(l, acc, func):
 #     if l:
 #         return func(fold(l[1:], acc, func), l[0])
@@ -170,11 +174,13 @@ def boolean(l):
     return IF(l)(True)(False)
 
 
-def array(l):
+def array(l, count = None):
     a = []
-    while not boolean(IS_EMPTY(l)):
+    while not boolean(IS_EMPTY(l)) and count is not 0:
         a.append(FIRST(l))
         l = REST(l)
+        if count is not None:
+            count = count - 1
     return a
 
 

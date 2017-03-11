@@ -126,6 +126,18 @@ def test_range():
     assert list(map(integer, array(RANGE(ONE)(POWER(MULTI(TWO)(FIVE))(TWO))))) == list(range(1, (2 * 5) ** 2 + 1))
 
 
+def test_infinity():
+    assert integer(FIRST(INFINITY)) == 0
+    assert integer(FIRST(REST(INFINITY))) == 0
+    assert  integer(FIRST(REST(REST(INFINITY)))) == 0
+
+
+def test_infinity_2():
+    assert list(map(integer, array(INFINITY, 5))) == [0 for i in range(5)]
+    assert list(map(integer, array(INFINITY, 10))) == [0 for i in range(10)]
+    assert list(map(integer, array(INFINITY, 20))) == [0 for i in range(20)]
+
+
 def test_fold():
     assert integer(FOLD(RANGE(ONE)(FIVE))(ZERO)(ADD)) == 15
     assert integer(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)) == 120
