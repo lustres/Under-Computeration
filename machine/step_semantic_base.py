@@ -121,7 +121,6 @@ class If(Statement):
         self.alternative = alternative
 
     def __str__(self):
-        # TODO:
         return f'if ({self.condition}) {"{"} {self.consequence} {"}"} else {"{"} self.alternative {"}"}'
 
 
@@ -132,5 +131,4 @@ class While(Statement):
         self.body = body
 
     def __str__(self):
-        # TODO:
         return f'while ({self.condition}) {"{"} {self.body} {"}"}'

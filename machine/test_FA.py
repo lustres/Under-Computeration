@@ -2,13 +2,6 @@ from FA import *
 from base import RuleBook, MultiRuleBook
 
 
-def test_step_semantic():
-    import small_step_semantic
-    import big_step_semantic
-    small_step_semantic.main()
-    big_step_semantic.main()
-
-
 def test_DFA():
     rulebook = RuleBook([
         FARule(1, 'a', 2), FARule(1, 'b', 1),

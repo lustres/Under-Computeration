@@ -16,6 +16,7 @@ class Machine(object):
             print(f'{self.statement} <= {self.environment}')
             self.tick()
         print(f'{self.statement} <= {self.environment}')
+        return self
 
 
 Value.is_reducible = lambda self: False
@@ -38,10 +39,10 @@ Add.reduce = lambda self, environment:\
           else Number(self.left.value + self.right.value))
 
 
-Multiply.reduce = lambda self, environment:\
-    Add(self.left.reduce(environment), self.right)\
+Multiply.reduce = lambda self, environment: \
+    Multiply(self.left.reduce(environment), self.right)\
     if self.left.is_reducible()\
-    else (Add(self.left, self.right.reduce(environment))
+    else (Multiply(self.left, self.right.reduce(environment))
           if self.right.is_reducible()
           else Number(self.left.value * self.right.value))
 
@@ -109,16 +110,3 @@ def while_reduce(self, environment):
 
 
 While.reduce = while_reduce
-
-
-def main():
-    Machine(
-        While(
-            LessThan(Variable('x'), Number(5)),
-            Assign('x', Multiply(Variable('x'), Number(3)))),
-        {'x': Number(1)}
-    ).run()
-
-
-if __name__ == '__main__':
-    main()

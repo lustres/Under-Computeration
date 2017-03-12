@@ -55,16 +55,3 @@ def while_evaluate(self, environment):
 
 
 While.evaluate = while_evaluate
-
-
-def main():
-    statement = While(
-        LessThan(Variable('x'), Number(5)),
-        Assign('x', Multiply(Variable('x'), Number(3))))
-
-    print(statement)
-    print(statement.evaluate({'x': Number(1)}))
-
-
-if __name__ == '__main__':
-    main()
