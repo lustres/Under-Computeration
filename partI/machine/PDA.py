@@ -1,4 +1,5 @@
 from functools import reduce
+
 from base import Rule
 
 
