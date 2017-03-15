@@ -129,6 +129,26 @@ SLIDE = lambda p: PAIR(RIGHT(p))(INCREMENT(RIGHT(p)))
 RANGE = Z(lambda f: lambda m: lambda n: IF(LESS_OR_EQUAL(m)(n))(lambda x: UNSHIFT(f(INCREMENT(m))(n))(m)(x))(EMPTY))
 
 
+# INFINITY = UNSHIFT(INFINITY)(ZERO)
+INFINITY = Z(lambda f: UNSHIFT(f)(ZERO))
+
+# PROGRESS = lambda n: UNSHIFT(PROGRESS(INCREMENT(n)))(n)
+# PROGRESS = lambda n: UNSHIFT(lambda x: PROGRESS(INCREMENT(n))(x))(n)
+PROGRESS = Z(lambda f: lambda n: UNSHIFT(lambda x: f(INCREMENT(n))(x))(n))
+# PROGRESS = lambda n: GENERATOR(n)(INCREMENT)
+
+# INCREMENT_N = lambda n: ADD(n)
+# MULTIPLE = lambda n : UNSHIFT(MULTIPLE(INCREMENT_N(n))(n))(n)
+# MULTIPLE = lambda m: lambda n: UNSHIFT(MULTIPLE(ADD(m)(n)))(n)(m)
+# MULTIPLE = lambda m: lambda n: UNSHIFT(lambda x: MULTIPLE(ADD(m)(n))(x))(n)(m)
+MULTIPLE = lambda m: Z(lambda f: lambda n: UNSHIFT(lambda x: f(ADD(m)(n))(x))(n))(m)
+# MULTIPLE = lambda n: GENERATOR(n)(ADD(n))
+
+# GENERATOR = lambda n: lambda g: UNSHIFT(GENERATOR(g(n))(g))(n)
+# GENERATOR = lambda n: lambda g: UNSHIFT(lambda x: GENERATOR(g(n))(g)(x))(n)
+GENERATOR = Z(lambda f: lambda n: lambda g: UNSHIFT(lambda x: f(g(n))(g)(x))(n))
+
+
 # def fold(l, acc, func):
 #     if l:
 #         return func(fold(l[1:], acc, func), l[0])
@@ -141,6 +161,10 @@ FOLD = Z(lambda f: lambda l: lambda x: lambda g: IF(IS_EMPTY(l))(x)(lambda y: g(
 # def map(l, func):
 #     return fold(l, [], lambda array: lambda x: array.unshift(func(x)))
 MAP = lambda k: lambda f: FOLD(k)(EMPTY)(lambda l: lambda x: UNSHIFT(l)(f(x)))
+
+# MERGE = lambda s: lambda t: lambda g: UNSHIFT(MERGE(REST(s))(REST(t))(g))(g(FIRST(s))(FIRST(t)))
+# MERGE = lambda s: lambda t: lambda g: UNSHIFT(lambda x: MERGE(REST(s))(REST(t))(g)(x))(g(FIRST(s))(FIRST(t)))
+MERGE = Z(lambda f: lambda s: lambda t: lambda g: UNSHIFT(lambda x: f(REST(s))(REST(t))(g)(x))(g(FIRST(s))(FIRST(t))))
 
 
 FIZZ     = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(EMPTY)(ADD(TEN)(FOUR)))(ADD(TEN)(FOUR)))(ADD(TEN)(TWO)))(ADD(TEN)(ONE))
@@ -170,11 +194,13 @@ def boolean(l):
     return IF(l)(True)(False)
 
 
-def array(l):
+def array(l, count = None):
     a = []
-    while not boolean(IS_EMPTY(l)):
+    while not boolean(IS_EMPTY(l)) and count is not 0:
         a.append(FIRST(l))
         l = REST(l)
+        if count is not None:
+            count = count - 1
     return a
 
 

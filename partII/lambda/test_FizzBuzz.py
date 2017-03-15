@@ -126,6 +126,34 @@ def test_range():
     assert list(map(integer, array(RANGE(ONE)(POWER(MULTI(TWO)(FIVE))(TWO))))) == list(range(1, (2 * 5) ** 2 + 1))
 
 
+def test_infinity():
+    assert integer(FIRST(INFINITY)) == 0
+    assert integer(FIRST(REST(INFINITY))) == 0
+    assert integer(FIRST(REST(REST(INFINITY)))) == 0
+
+
+def test_infinity_2():
+    assert list(map(integer, array(INFINITY, 5))) == [0 for i in range(5)]
+    assert list(map(integer, array(INFINITY, 10))) == [0 for i in range(10)]
+    assert list(map(integer, array(INFINITY, 20))) == [0 for i in range(20)]
+
+
+def test_progress():
+    assert list(map(integer, array(PROGRESS(ZERO), 5))) == [i for i in range(5)]
+    assert list(map(integer, array(PROGRESS(FIFTEEN), 20))) == [i for i in range(15, 15 + 20)]
+
+
+def test_multiple():
+    assert list(map(integer, array(MULTIPLE(TWO),   10))) == [i * 2 for i in range(1, 10 + 1)]
+    assert list(map(integer, array(MULTIPLE(THREE), 10))) == [i * 3 for i in range(1, 10 + 1)]
+    assert list(map(integer, array(MULTIPLE(FIVE),  20))) == [i * 5 for i in range(1, 20 + 1)]
+
+
+def test_generator():
+    assert list(map(integer, array(GENERATOR(TWO)(ADD(TWO)), 10))) == [i * 2 for i in range(1, 10 + 1)]
+    assert list(map(integer, array(GENERATOR(FIVE)(ADD(FIVE)), 20))) == [i * 5 for i in range(1, 20 + 1)]
+
+
 def test_fold():
     assert integer(FOLD(RANGE(ONE)(FIVE))(ZERO)(ADD)) == 15
     assert integer(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)) == 120
@@ -133,6 +161,10 @@ def test_fold():
 
 def test_map():
     assert list(map(integer, array(MAP(RANGE(ONE)(THREE))(INCREMENT)))) == [2, 3, 4]
+
+
+def test_merge():
+    assert list(map(integer,  array(MERGE(PROGRESS(ZERO))(PROGRESS(ZERO))(ADD), 10))) == [i * 2 for i in range(10)]
 
 
 def test_str():
