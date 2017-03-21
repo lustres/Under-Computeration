@@ -22,6 +22,18 @@ class Variable:
         else:
             return self
 
+    def bound_vars(self):
+        """
+        Variable never bound variable.
+        """
+        return {}
+
+    def free_vars(self):
+        """
+        Variable always introduce free variable into context.
+        """
+        return {self.name}
+
     def __repr__(self):
         return self.name
 
@@ -76,6 +88,18 @@ class Function:
     def call(self, argument):
         return self.body.replace(self.parameter, argument)
 
+    def bound_vars(self):
+        """
+        Function only bound variable once as its parameter.
+        """
+        return {self.parameter}
+
+    def free_vars(self):
+        """
+        Function will bound its parameter on body.
+        """
+        return self.body.free_vars() - self.bound_vars()
+
     def __repr__(self):
         return f"lambda {self.parameter}: {self.body}"
 
@@ -117,6 +141,18 @@ class Call:
             return Call(self.left, self.right.reduce())
         else:
             return self.left.call(self.right)
+
+    def bound_vars(self):
+        """
+        Call never bound variable cause all bounded value inside are not visible outside.
+        """
+        return {}
+
+    def free_vars(self):
+        """
+        All free variable in sub pair of Call are still visible outside.
+        """
+        return self.left.free_vars() | self.right.free_vars()
 
     def __repr__(self):
         return f"{self.left}({self.right})"
