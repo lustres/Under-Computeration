@@ -85,9 +85,6 @@ class Function:
         else:
             return Function(self.parameter, self.body.replace(name, another))
 
-    def call(self, argument):
-        return self.body.replace(self.parameter, argument)
-
     def bound_vars(self):
         """
         Function only bound variable once as its parameter.
@@ -102,6 +99,58 @@ class Function:
 
     def __repr__(self):
         return f"lambda {self.parameter}: {self.body}"
+
+
+def alpha(func, rename, aim = None):
+    """
+    :type Function
+    :param func:
+    :type Variable
+    :param rename:
+    """
+    if isinstance(func, Function):
+        if aim is None:
+            # first call
+            # replace parameter and apply alpha_conv to body
+            return Function(rename, alpha(func.body, rename, func.parameter))
+        else:
+            # not first call
+            if func.parameter is aim:
+                # inner bounded
+                return func
+            else:
+                # alpha_conv to body
+                return Function(func.parameter, alpha(func.body, rename, aim))
+    elif isinstance(func, Call):
+        return Call(alpha(func.left, rename, aim), alpha(func.right, rename, aim))
+    elif isinstance(func, Variable):
+        if func.name == aim:
+            return rename
+        else:
+            return func
+    else:
+        raise TypeError()
+
+
+def beta(func, argument):
+    """
+    :type Function
+    :param func:
+    """
+    return func.body.replace(func.parameter, argument)
+
+
+def eta(func):
+    """
+    :type Function
+    :param func:
+    """
+    if isinstance(func.body, Call) \
+            and repr(func.body.right) is func.parameter \
+            and func.parameter not in func.body.left.free_vars():
+        return func.body.left
+    else:
+        return func
 
 
 class Call:
@@ -140,7 +189,7 @@ class Call:
         elif is_reducible(self.right):
             return Call(self.left, self.right.reduce())
         else:
-            return self.left.call(self.right)
+            return beta(self.left, self.right)
 
     def bound_vars(self):
         """

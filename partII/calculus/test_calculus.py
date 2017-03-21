@@ -66,12 +66,6 @@ def test_semantic_replace_4():
     assert repr(e.replace('y', replacement)) == 'lambda x: x(z(x))'
 
 
-def test_semantic_call():
-    f = Function('x', Function('y', Call(Variable('x'), Variable('y'))))
-    arg = Function('z', Variable('z'))
-    assert repr(f.call(arg)) == 'lambda y: lambda z: z(y)'
-
-
 def test_semantic_reduce():
     e = Call(Call(add, one), one)
     inc = Variable('inc')
@@ -80,3 +74,38 @@ def test_semantic_reduce():
     while is_reducible(e):
         e = e.reduce()
     assert repr(e) == 'inc(inc(zero))'
+
+
+def test_alpha():
+    e = alpha(one, Variable('f'))
+    assert repr(e) == 'lambda f: lambda x: f(x)'
+
+    e = alpha(increment, Variable('g'))
+    assert repr(e) == 'lambda g: lambda p: lambda x: p(g(p)(x))'
+
+    e = alpha(add, Variable('q'))
+    assert repr(e) == 'lambda q: lambda n: lambda f: lambda x: q(f)(n(f)(x))'
+
+
+def test_alpha_2():
+    e = Function('x', Function('y', Call(Function('x', Call(Variable('x'), Variable('y'))), Variable('x'))))
+    assert repr(e) == 'lambda x: lambda y: lambda x: x(y)(x)'
+    e = alpha(e, Variable('w'))
+    assert repr(e) == 'lambda w: lambda y: lambda x: x(y)(w)'
+
+
+def test_beta():
+    f = Function('x', Function('y', Call(Variable('x'), Variable('y'))))
+    arg = Function('z', Variable('z'))
+    assert repr(beta(f, arg)) == 'lambda y: lambda z: z(y)'
+
+
+def test_eta():
+    e = Function('x', Call(Variable('f'), Variable('x')))
+    assert repr(eta(e)) == 'f'
+
+
+def test_eta_2():
+    e = lambda x: lambda y: lambda z: x(y)(z)(x)
+    e = Function('x', Function('y', Function('z', Call(Call(Call(Variable('x'), Variable('y')),Variable('z')),Variable('x')))))
+    assert repr(eta(e)) == 'lambda x: lambda y: lambda z: x(y)(z)(x)'
