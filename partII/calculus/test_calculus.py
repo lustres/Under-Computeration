@@ -57,13 +57,18 @@ def test_semantic_replace_3():
 
 
 def test_semantic_replace_4():
-    """
-    This function shows the bug in replace method.
-    """
     e = Function('x',
                  Call(Variable('x'), Variable('y')))
     replacement = Call(Variable('z'), Variable('x'))
-    assert repr(e.replace('y', replacement)) == 'lambda x: x(z(x))'
+    assert repr(e.replace('y', replacement)) == "lambda x': x'(z(x))"
+
+
+def test_semantic_replace_5():
+    # e = lambda p: lambda x: lambda z: (lambda x: y(p(x)))(x)(z)
+    e = Function('p', Function('x', Function('z', Call(Call(Function('x', Call(Variable('y'), Call(Variable('p'), Variable('x')))), Variable('x')), Variable('z')))))
+    assert repr(e) == "lambda p: lambda x: lambda z: lambda x: y(p(x))(x)(z)"
+    replacement = Call(Variable('z'), Variable('x'))
+    assert repr(e.replace('y', replacement)) == "lambda p: lambda x': lambda z': lambda x': z(x)(p(x'))(x')(z')"
 
 
 def test_semantic_reduce():

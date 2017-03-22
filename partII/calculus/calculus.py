@@ -56,33 +56,24 @@ class Function:
     def replace(self, name, another):
         """
         replace a free variable in the body of this function with another expression.
-        Please make sure replacement doesn't have free variable of which name appear in aim function.
-
-        The free variable in replacement maybe captured by outer lambda parameter in accident .
-            eg:
-                e = lambda x: x(y)
-                let y = z(x)
-                => e = lambda x: x(z(x))
-                                     ^ free variable captured
-
-        The right behavior is rename parameter when conflict happened:
-            eg:
-                e = lambda x: x(y)
-                let y = z(x) # free variable conflict
-                => e = lambda w: w(y) # rename parameter with a unique id
-                     = lambda w: w(z(x))
-
-        We could record variable name used in term to solve this problem.
-        This implement are still effective as long as we make sure the replacement never contain free variable.
+        if body doesn't have matched free variable, the method return self
+        if you want replace a bound variable, use `alpha` instead
         :type str
         :param name: name of aim variable
         :param another: an expression used to replace
         :type Function
         :return: function after replace in if name marched or self
         """
-        if self.parameter == name:
+        if name not in self.free_vars():
+            # don't have aim free var
             return self
+        elif self.bound_vars() & another.free_vars():
+            # capture conflict
+            # use alpha conversion to rename bound var aka. parameter
+            return alpha(self, rename_policy(self.parameter)).replace(name, another)
         else:
+            # have aim free var
+            # no conflict
             return Function(self.parameter, self.body.replace(name, another))
 
     def bound_vars(self):
@@ -111,7 +102,7 @@ def alpha(func, rename, aim = None):
     if isinstance(func, Function):
         if aim is None:
             # first call
-            # replace parameter and apply alpha_conv to body
+            # replace parameter and apply `alpha` to body
             return Function(rename, alpha(func.body, rename, func.parameter))
         else:
             # not first call
@@ -119,7 +110,7 @@ def alpha(func, rename, aim = None):
                 # inner bounded
                 return func
             else:
-                # alpha_conv to body
+                # apply `alpha` to body
                 return Function(func.parameter, alpha(func.body, rename, aim))
     elif isinstance(func, Call):
         return Call(alpha(func.left, rename, aim), alpha(func.right, rename, aim))
@@ -151,6 +142,10 @@ def eta(func):
         return func.body.left
     else:
         return func
+
+
+def rename_policy(name):
+    return Variable(name + "'")
 
 
 class Call:
