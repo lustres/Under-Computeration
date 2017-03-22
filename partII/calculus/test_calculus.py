@@ -26,8 +26,14 @@ def test_grammar():
 def test_grammar_2():
     assert repr(increment) == 'lambda n: lambda p: lambda x: p(n(p)(x))'
 
+
 def test_grammar_3():
     assert repr(add) == 'lambda m: lambda n: lambda f: lambda x: m(f)(n(f)(x))'
+
+
+def test_grammar_4():
+    e = Function('x', Function('y', Call(Function('z', Call('z', 'x')), Variable('y'))))
+    assert repr(e) == "lambda x: lambda y: (lambda z: z(x))(y)"
 
 
 def test_semantic_replace():
@@ -66,9 +72,8 @@ def test_semantic_replace_4():
 def test_semantic_replace_5():
     # e = lambda p: lambda x: lambda z: (lambda x: y(p(x)))(x)(z)
     e = Function('p', Function('x', Function('z', Call(Call(Function('x', Call(Variable('y'), Call(Variable('p'), Variable('x')))), Variable('x')), Variable('z')))))
-    assert repr(e) == "lambda p: lambda x: lambda z: lambda x: y(p(x))(x)(z)"
     replacement = Call(Variable('z'), Variable('x'))
-    assert repr(e.replace('y', replacement)) == "lambda p: lambda x': lambda z': lambda x': z(x)(p(x'))(x')(z')"
+    assert repr(e.replace('y', replacement)) == "lambda p: lambda x': lambda z': (lambda x': z(x)(p(x')))(x')(z')"
 
 
 def test_semantic_reduce():
@@ -94,15 +99,15 @@ def test_alpha():
 
 def test_alpha_2():
     e = Function('x', Function('y', Call(Function('x', Call(Variable('x'), Variable('y'))), Variable('x'))))
-    assert repr(e) == 'lambda x: lambda y: lambda x: x(y)(x)'
+    assert repr(e) == 'lambda x: lambda y: (lambda x: x(y))(x)'
     e = alpha(e, Variable('w'))
-    assert repr(e) == 'lambda w: lambda y: lambda x: x(y)(w)'
+    assert repr(e) == 'lambda w: lambda y: (lambda x: x(y))(w)'
 
 
 def test_beta():
     f = Function('x', Function('y', Call(Variable('x'), Variable('y'))))
     arg = Function('z', Variable('z'))
-    assert repr(beta(f, arg)) == 'lambda y: lambda z: z(y)'
+    assert repr(beta(f, arg)) == 'lambda y: (lambda z: z)(y)'
 
 
 def test_eta():

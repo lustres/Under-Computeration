@@ -199,7 +199,10 @@ class Call:
         return self.left.free_vars() | self.right.free_vars()
 
     def __repr__(self):
-        return f"{self.left}({self.right})"
+        if isinstance(self.left, Function):
+            return f"({self.left})({self.right})"
+        else:
+            return f"{self.left}({self.right})"
 
 
 def is_reducible(term):
