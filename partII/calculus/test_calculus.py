@@ -78,12 +78,7 @@ def test_semantic_replace_5():
 
 def test_semantic_reduce():
     e = Call(Call(add, one), one)
-    inc = Variable('inc')
-    zero = Variable('zero')
-    e = Call(Call(e, inc), zero)
-    while is_reducible(e):
-        e = e.reduce()
-    assert repr(e) == 'inc(inc(zero))'
+    assert repr(reduce(e)) == 'lambda f: lambda x: f(f(x))'
 
 
 def test_alpha():

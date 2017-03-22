@@ -34,6 +34,9 @@ class Variable:
         """
         return {self.name}
 
+    def reduce(self):
+        return self
+
     def __repr__(self):
         return self.name
 
@@ -87,6 +90,9 @@ class Function:
         Function will bound its parameter on body.
         """
         return self.body.free_vars() - self.bound_vars()
+
+    def reduce(self):
+        return Function(self.parameter, self.body.reduce())
 
     def __repr__(self):
         return f"lambda {self.parameter}: {self.body}"
@@ -179,12 +185,17 @@ class Call:
         This method will call `reduce` on two parts recursively.
         And then make call on it self.
         """
-        if is_reducible(self.left):
-            return Call(self.left.reduce(), self.right)
-        elif is_reducible(self.right):
+        # reduce argument first
+        if is_reducible(self.right):
             return Call(self.left, self.right.reduce())
-        else:
+        elif is_reducible(self.left):
+            return Call(self.left.reduce(), self.right)
+        elif isinstance(self.left, Function):
+            # reduce all part so make call
             return beta(self.left, self.right)
+        else:
+            # reduce all part and finish
+            return self
 
     def bound_vars(self):
         """
@@ -219,3 +230,15 @@ def is_reducible(term):
         return is_reducible(term.left) or is_reducible(term.right) or isinstance(term.left, Function)
     else:
         raise TypeError()
+
+def reduce(term):
+    while is_reducible(term):
+        term = term.reduce()
+
+    while True:
+        new_term = term.reduce()
+        if repr(new_term) == repr(term):
+            break
+        term = new_term
+
+    return term
