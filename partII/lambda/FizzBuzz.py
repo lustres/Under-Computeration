@@ -183,7 +183,7 @@ FIZZBUZZ = UNSHIFT(UNSHIFT(UNSHIFT(UNSHIFT(BUZZ)(ADD(TEN)(FOUR)))(ADD(TEN)(FOUR)
 #     return previous() + [n % 10]
 # DIGITS = lambda n: PUSH(IF(LESS_OR_EQUAL(n)(SUB(TEN)(ONE)))(EMPTY)(DIGITS(DIV(n)(TEN))))(MOD(n)(TEN))
 # DIGITS = lambda n: PUSH(IF(LESS_OR_EQUAL(n)(SUB(TEN)(ONE)))(EMPTY)(lambda x: DIGITS(DIV(n)(TEN)))(x))(MOD(n)(TEN))
-DIGITS = Z(lambda f: lambda n: PUSH(IF(LESS_OR_EQUAL(n)(SUB(TEN)(ONE)))(EMPTY)(lambda x: DIGITS(DIV(n)(TEN))(x)))(MOD(n)(TEN)))
+DIGITS = Z(lambda f: lambda n: PUSH(IF(LESS_OR_EQUAL(n)(SUB(TEN)(ONE)))(EMPTY)(lambda x: f(DIV(n)(TEN))(x)))(MOD(n)(TEN)))
 
 
 def integer(l):
