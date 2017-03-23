@@ -44,8 +44,11 @@ class Variable(Term):
     def reduce(self):
         return self
 
-    def __repr__(self):
+    def __str__(self):
         return self.name
+
+    def __repr__(self):
+        return f"Variable({repr(self.name)})"
 
 
 class Function(Term):
@@ -102,9 +105,11 @@ class Function(Term):
     def reduce(self):
         return Function(self.parameter, self.body.reduce())
 
-    def __repr__(self):
+    def __str__(self):
         return f"lambda {self.parameter}: {self.body}"
 
+    def __repr__(self):
+        return f"Function({repr(self.parameter)}, {repr(self.body)})"
 
 def alpha(func, rename, aim = None):
     """
@@ -149,7 +154,7 @@ def eta(func):
     :param func:
     """
     if isinstance(func.body, Call) \
-            and repr(func.body.right) is func.parameter \
+            and str(func.body.right) is func.parameter \
             and func.parameter not in func.body.left.free_vars():
         return func.body.left
     else:
@@ -216,11 +221,14 @@ class Call(Term):
         """
         return self.left.free_vars() | self.right.free_vars()
 
-    def __repr__(self):
+    def __str__(self):
         if isinstance(self.left, Function):
             return f"({self.left})({self.right})"
         else:
             return f"{self.left}({self.right})"
+
+    def __repr__(self):
+        return f"Call({repr(self.left)}, {repr(self.right)})"
 
 
 def is_reducible(term):
@@ -243,7 +251,7 @@ def reduce(term):
 
     while True:
         new_term = term.reduce()
-        if repr(new_term) == repr(term):
+        if str(new_term) == str(term):
             break
         term = new_term
 
