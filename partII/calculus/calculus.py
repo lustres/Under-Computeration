@@ -1,4 +1,9 @@
-class Variable:
+class Term(object):
+    def __init__(self):
+        super(Term, self).__init__()
+
+
+class Variable(Term):
     """
     Variable objects could be captured or passed in lambda expression.
     """
@@ -7,6 +12,7 @@ class Variable:
         :type str
         :param name: a string used to refer this object
         """
+        super(Variable, self).__init__()
         self.name = name
 
     def replace(self, name, another):
@@ -15,6 +21,7 @@ class Variable:
         :type str
         :param name: name of aim variable
         :param another: an expression used to replace
+        :type Variable
         :return: expression passed in if name marched or self
         """
         if self.name == name:
@@ -41,7 +48,7 @@ class Variable:
         return self.name
 
 
-class Function:
+class Function(Term):
     """
     Function objects represent a single parameter lambda expression.
     """
@@ -53,6 +60,7 @@ class Function:
         :type Function | Call | Variable
         :param body: the rest of lambda
         """
+        super(Function, self).__init__()
         self.parameter = parameter
         self.body = body
 
@@ -125,8 +133,6 @@ def alpha(func, rename, aim = None):
             return rename
         else:
             return func
-    else:
-        raise TypeError()
 
 
 def beta(func, argument):
@@ -154,7 +160,7 @@ def rename_policy(name):
     return Variable(name + "'")
 
 
-class Call:
+class Call(Term):
     """
     Call objects define a call action on an entity.
     """
@@ -165,6 +171,7 @@ class Call:
         :type Function | Call | Variable
         :param right: the parameter which will be passed in
         """
+        super(Call, self).__init__()
         self.left = left
         self.right = right
 
@@ -228,8 +235,7 @@ def is_reducible(term):
         return False
     elif isinstance(term, Call):
         return is_reducible(term.left) or is_reducible(term.right) or isinstance(term.left, Function)
-    else:
-        raise TypeError()
+
 
 def reduce(term):
     while is_reducible(term):
