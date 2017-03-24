@@ -79,8 +79,7 @@ def test_math():
     assert ans(ADD(TWO)(THREE)) == ans(alpha(FIVE, Variable('f')))
     assert ans(SUB(FIVE)(THREE)) == ans(alpha(TWO, Variable('p')))
     assert ans(MULTI(THREE)(FIVE)) == ans(alpha(FIFTEEN, Variable('f')))
-    # assert ans(DIV(TEN)(THREE)) == ans(THREE)
-    assert ans(DIV(TEN)(THREE)) == "lambda x: lambda x': x(x(x(x')))"
+    assert ans(DIV(TEN)(THREE)) == ans(THREE)
     # assert ans(POWER(THREE)(THREE)) == ans(MULTI(POWER(THREE)(TWO))(THREE))
     assert ans(POWER(THREE)(THREE)(Variable('one'))) == ans(MULTI(POWER(THREE)(TWO))(THREE)(Variable('one')))
 
@@ -93,8 +92,8 @@ def test_less_or_equal():
 def test_mod():
     assert ans(MOD(FIFTEEN)(FIVE)) == ans(ZERO)
     assert ans(MOD(FIFTEEN)(THREE)) == ans(ZERO)
-    # assert ans(MOD(FIFTEEN)(TWO)) == ans(ONE)
-    assert ans(MOD(FIFTEEN)(TWO)) == "lambda x: lambda x': x(x')"
+    assert ans(MOD(FIFTEEN)(TWO)) == ans(ONE)
+
 
 def test_array():
     L = UNSHIFT(
@@ -156,7 +155,7 @@ def test_infinity():
 #
 
 def test_fold():
-    assert ans(FOLD(RANGE(ONE)(FIVE))(ZERO)(ADD)) == ans(alpha(FIFTEEN, Variable('y')))
+    assert ans(FOLD(RANGE(ONE)(FIVE))(ZERO)(ADD)) == ans(alpha(FIFTEEN, Variable('f')))
     # assert ans(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)) == ans(alpha(MULTI(MULTI(POWER(TWO)(THREE))(THREE))(FIVE), Variable('f')))
     assert ans(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)(Variable('one'))) == ans(MULTI(MULTI(POWER(TWO)(THREE))(THREE))(FIVE)(Variable('one')))
 #

@@ -103,7 +103,11 @@ class Function(Term):
         return self.body.free_vars() - self.bound_vars()
 
     def reduce(self):
-        return Function(self.parameter, self.body.reduce())
+        eta_ans = eta(self)
+        if isinstance(eta_ans, Function):
+            return Function(eta_ans.parameter, eta_ans.body.reduce())
+        else:
+            return eta_ans
 
     def __str__(self):
         return f"lambda {self.parameter}: {self.body}"
@@ -153,10 +157,10 @@ def eta(func):
     :type Function
     :param func:
     """
-    if isinstance(func.body, Call) \
+    if isinstance(func, Function) and isinstance(func.body, Call) \
             and str(func.body.right) is func.parameter \
             and func.parameter not in func.body.left.free_vars():
-        return func.body.left
+        return eta(func.body.left)
     else:
         return func
 

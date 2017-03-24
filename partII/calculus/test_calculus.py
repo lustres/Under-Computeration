@@ -81,6 +81,11 @@ def test_semantic_reduce():
     assert str(reduce(e)) == 'lambda f: lambda x: f(f(x))'
 
 
+def test_semantic_reduce_2():
+    e = Function('x', Call(Function('p', Function('x', Variable('x'))), Variable('x')))
+    assert str(reduce(e)) == "lambda p: lambda x: x"
+
+
 def test_alpha():
     e = alpha(one, Variable('f'))
     assert str(e) == 'lambda f: lambda x: f(x)'
