@@ -56,8 +56,8 @@ def test_pair_2():
 def test_increment():
     assert ans(INCREMENT(ZERO)) == ans(ONE)
     assert ans((INCREMENT(TWO))) == ans(THREE)
-    assert ans(INCREMENT(FIFTEEN)) == ans(ADD(FIFTEEN)(ONE))
-
+    # assert ans(INCREMENT(FIFTEEN)) == ans(ADD(FIFTEEN)(ONE))
+    assert ans(INCREMENT(FIFTEEN)(Variable('one'))) == ans(ADD(FIFTEEN)(ONE)(Variable('one')))
 
 def test_slide():
     NEXT_PAIR = SLIDE(PAIR(ZERO)(ZERO))
@@ -76,24 +76,25 @@ def test_decrement():
 
 
 def test_math():
-    assert ans(ADD(TWO)(THREE)) == ans(FIVE)
-    assert ans(SUB(FIVE)(THREE)) == ans(TWO)
-    assert ans(MULTI(THREE)(FIVE)) == ans(FIFTEEN)
-    assert ans(DIV(TEN)(THREE)) == ans(THREE)
-    assert ans(POWER(THREE)(FIVE)) == ans(MULTI(POWER(THREE)(FOUR))(THREE))
-
+    assert ans(ADD(TWO)(THREE)) == ans(alpha(FIVE, Variable('f')))
+    assert ans(SUB(FIVE)(THREE)) == ans(alpha(TWO, Variable('p')))
+    assert ans(MULTI(THREE)(FIVE)) == ans(alpha(FIFTEEN, Variable('f')))
+    # assert ans(DIV(TEN)(THREE)) == ans(THREE)
+    assert ans(DIV(TEN)(THREE)) == "lambda x: lambda x': x(x(x(x')))"
+    # assert ans(POWER(THREE)(THREE)) == ans(MULTI(POWER(THREE)(TWO))(THREE))
+    assert ans(POWER(THREE)(THREE)(Variable('one'))) == ans(MULTI(POWER(THREE)(TWO))(THREE)(Variable('one')))
 
 def test_less_or_equal():
     assert ans(LESS_OR_EQUAL(ONE)(TWO)) == ans(TRUE)
-    assert ans(LESS_OR_EQUAL(FIVE)(THREE)) == ans(TRUE)
+    assert ans(LESS_OR_EQUAL(FIVE)(THREE)) == ans(FALSE)
     assert ans(LESS_OR_EQUAL(FIFTEEN)(FIFTEEN)) == ans(TRUE)
 
 
 def test_mod():
     assert ans(MOD(FIFTEEN)(FIVE)) == ans(ZERO)
     assert ans(MOD(FIFTEEN)(THREE)) == ans(ZERO)
-    assert ans(MOD(FIFTEEN)(TWO)) == ans(ONE)
-
+    # assert ans(MOD(FIFTEEN)(TWO)) == ans(ONE)
+    assert ans(MOD(FIFTEEN)(TWO)) == "lambda x: lambda x': x(x')"
 
 def test_array():
     L = UNSHIFT(
@@ -155,9 +156,9 @@ def test_infinity():
 #
 
 def test_fold():
-    assert ans(FOLD(RANGE(ONE)(FIVE))(ZERO)(ADD)) == ans(FIFTEEN)
-    assert ans(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)) == ans(MULTI(MULTI(POWER(TWO)(THREE))(THREE))(FIVE))
-
+    assert ans(FOLD(RANGE(ONE)(FIVE))(ZERO)(ADD)) == ans(alpha(FIFTEEN, Variable('y')))
+    # assert ans(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)) == ans(alpha(MULTI(MULTI(POWER(TWO)(THREE))(THREE))(FIVE), Variable('f')))
+    assert ans(FOLD(RANGE(ONE)(FIVE))(ONE)(MULTI)(Variable('one'))) == ans(MULTI(MULTI(POWER(TWO)(THREE))(THREE))(FIVE)(Variable('one')))
 #
 # def test_map():
 #     assert list(map(integer, array(MAP(RANGE(ONE)(THREE))(INCREMENT)))) == [2, 3, 4]
