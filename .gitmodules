@@ -1,0 +1,3 @@
+[submodule "partII/calculus"]
+	path = partII/calculus
+	url = https://github.com/Lustres/LambdaCalculus.git
